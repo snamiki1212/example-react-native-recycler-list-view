@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Dimensions, StyleSheet } from "react-native";
+import { View, Dimensions, StyleSheet, Text } from "react-native";
 import {
   RecyclerListView,
   DataProvider,
@@ -86,13 +86,18 @@ export const MyList: React.VFC<Props> = ({ list }) => {
   const defineType = createDefineType({ isLast });
   const lp = new LayoutProvider(defineType, defineDimension);
   const dp = new DataProvider(isShallowEqual).cloneWithRows(list);
+  const shouldRenderRVL = list.length > 1;
   return (
     <View style={styles.container}>
-      <RecyclerListView
-        layoutProvider={lp}
-        dataProvider={dp}
-        rowRenderer={renderer}
-      />
+      {shouldRenderRVL ? (
+        <RecyclerListView
+          layoutProvider={lp}
+          dataProvider={dp}
+          rowRenderer={renderer}
+        />
+      ) : (
+        <Text>Empty</Text>
+      )}
     </View>
   );
 };
