@@ -10,9 +10,30 @@ import { Item } from "../type";
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const HEIGHT_WIDTH = Dimensions.get("window").width;
 
-const Cell: React.FC = ({ children }) => {
+type CellProps = {
+  color?: "red" | "blue" | "green" | "pink";
+};
+
+const Cell: React.FC<CellProps> = ({ children, color }) => {
+  const colorStyle = (() => {
+    switch (color) {
+      case "red": {
+        return styles.red;
+      }
+      case "blue": {
+        return styles.blue;
+      }
+      case "green": {
+        return styles.green;
+      }
+      case "pink": {
+        return styles.pink;
+      }
+    }
+  })();
+
   return (
-    <View style={styles.item}>
+    <View style={[styles.item, colorStyle]}>
       <Text>{children}</Text>
     </View>
   );
@@ -43,22 +64,22 @@ const defineDimension = (type: any, dim: any) => {
   switch (_type) {
     case RVL.HEADER: {
       dim.width = WINDOW_WIDTH;
-      dim.height = 50;
+      dim.height = 20;
       return;
     }
     case RVL.BODY: {
       dim.width = WINDOW_WIDTH;
-      dim.height = 30;
+      dim.height = 20;
       return;
     }
     case RVL.CM: {
       dim.width = WINDOW_WIDTH;
-      dim.height = 40;
+      dim.height = 20;
       return;
     }
     case RVL.FOOTER: {
       dim.width = WINDOW_WIDTH;
-      dim.height = 10;
+      dim.height = 20;
       return;
     }
   }
@@ -69,16 +90,16 @@ const renderer = (_type: any, _item: any, index: number) => {
   const item = _item as Item;
   switch (type) {
     case RVL.HEADER: {
-      return <Cell>Header: {item.id}</Cell>;
+      return <Cell color="red">Header: {item.id}</Cell>;
     }
     case RVL.BODY: {
-      return <Cell>Body: {item.id}</Cell>;
+      return <Cell color="pink">Body: {item.id}</Cell>;
     }
     case RVL.CM: {
-      return <Cell>CM: {item.id}</Cell>;
+      return <Cell color="green">CM: {item.id}</Cell>;
     }
     case RVL.FOOTER: {
-      return <Cell>Footer: {item.id}</Cell>;
+      return <Cell color="blue">Footer: {item.id}</Cell>;
     }
     default: {
       return <Cell>DEFAULT: {item.id}</Cell>;
@@ -107,12 +128,23 @@ export const MyList: React.VFC<Props> = ({ list }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "pink",
     width: WINDOW_WIDTH,
     height: HEIGHT_WIDTH,
   },
   item: {
     width: WINDOW_WIDTH,
-    height: 200,
+    height: 20,
+  },
+  pink: {
+    backgroundColor: "pink",
+  },
+  red: {
+    backgroundColor: "red",
+  },
+  blue: {
+    backgroundColor: "blue",
+  },
+  green: {
+    backgroundColor: "green",
   },
 });
