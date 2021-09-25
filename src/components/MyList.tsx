@@ -79,9 +79,9 @@ const renderer = (_type: any, _item: any, index: number) => {
   }
 };
 
-type Props = { list: Item[] };
+type Props = { list: Item[]; onEndReached: () => void };
 
-export const MyList: React.VFC<Props> = ({ list }) => {
+export const MyList: React.VFC<Props> = ({ list, onEndReached }) => {
   const isLast = (idx: number) => list.length - 1 === idx;
   const defineType = createDefineType({ isLast });
   const lp = new LayoutProvider(defineType, defineDimension);
@@ -91,9 +91,16 @@ export const MyList: React.VFC<Props> = ({ list }) => {
     <View style={styles.container}>
       {shouldRenderRVL ? (
         <RecyclerListView
+          /********************
+           * Required
+           *******************/
           layoutProvider={lp}
           dataProvider={dp}
           rowRenderer={renderer}
+          /******************
+           * options
+           *******************/
+          onEndReached={onEndReached}
         />
       ) : (
         <Text>Empty</Text>

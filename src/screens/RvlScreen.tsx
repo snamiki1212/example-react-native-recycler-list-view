@@ -37,7 +37,7 @@ export const RvlScreen = () => {
         <Button onPress={onDecrement} title="-100" />
       </View>
       <View style={styles.container}>
-        <MyList list={list} />
+        <MyList list={list} onEndReached={onIncrement} />
       </View>
       <Space />
     </>
