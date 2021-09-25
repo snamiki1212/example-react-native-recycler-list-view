@@ -5,6 +5,7 @@ import {
   DataProvider,
   LayoutProvider,
 } from "recyclerlistview";
+import { Item } from "../type";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const HEIGHT_WIDTH = Dimensions.get("window").width;
@@ -17,11 +18,7 @@ const Cell: React.FC = ({ children }) => {
   );
 };
 
-type Item = { id: number };
-
 const isShallowEqual = (prev: Item, next: Item) => prev.id !== next.id;
-
-const list: Item[] = Array.from({ length: 100 }, (_, idx) => ({ id: idx }));
 
 const RVL = {
   HEADER: "HEADER",
@@ -32,11 +29,14 @@ const RVL = {
 
 type RVL_TYPES = typeof RVL[keyof typeof RVL];
 
-const defineType = (index: number) => {
-  if (index == 0) return RVL.HEADER;
-  if (index % 6 == 0) return RVL.CM; // 6個に１つ広告
-  return RVL.BODY;
-};
+const createDefineType =
+  ({ isLast }: { isLast: (idx: number) => boolean }) =>
+  (index: number) => {
+    if (index == 0) return RVL.HEADER;
+    if (index % 6 == 0) return RVL.CM; // 6個に１つ広告
+    if (isLast(index)) return RVL.FOOTER;
+    return RVL.BODY;
+  };
 
 const defineDimension = (type: any, dim: any) => {
   const _type = type as RVL_TYPES;
@@ -86,18 +86,20 @@ const renderer = (_type: any, _item: any, index: number) => {
   }
 };
 
-export const MyList = () => {
+type Props = { list: Item[] };
+
+export const MyList: React.VFC<Props> = ({ list }) => {
+  const isLast = (idx: number) => list.length - 1 === idx;
+  const defineType = createDefineType({ isLast });
   const lp = new LayoutProvider(defineType, defineDimension);
   const dp = new DataProvider(isShallowEqual).cloneWithRows(list);
   return (
     <View style={styles.container}>
-      <Text>------</Text>
       <RecyclerListView
         layoutProvider={lp}
         dataProvider={dp}
         rowRenderer={renderer}
       />
-      <Text>------</Text>
     </View>
   );
 };
