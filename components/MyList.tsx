@@ -1,46 +1,15 @@
-import React, { useState } from "react";
-import { View, Text, Dimensions, StyleSheet } from "react-native";
+import React from "react";
+import { View, Dimensions, StyleSheet } from "react-native";
 import {
   RecyclerListView,
   DataProvider,
   LayoutProvider,
 } from "recyclerlistview";
 import { Item } from "../type";
+import { Cell } from "./Cell";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const HEIGHT_WIDTH = Dimensions.get("window").width;
-
-type CellProps = {
-  color?: "red" | "blue" | "green" | "pink";
-};
-
-const colorStyle = (color?: string) => {
-  switch (color) {
-    case "red": {
-      return styles.red;
-    }
-    case "blue": {
-      return styles.blue;
-    }
-    case "green": {
-      return styles.green;
-    }
-    case "pink": {
-      return styles.pink;
-    }
-    default: {
-      return styles.red;
-    }
-  }
-};
-
-const Cell: React.FC<CellProps> = ({ children, color }) => {
-  return (
-    <View style={[styles.item, colorStyle(color)]}>
-      <Text>{children}</Text>
-    </View>
-  );
-};
 
 const isShallowEqual = (prev: Item, next: Item) => prev.id !== next.id;
 
@@ -137,17 +106,5 @@ const styles = StyleSheet.create({
   item: {
     width: WINDOW_WIDTH,
     height: 20,
-  },
-  pink: {
-    backgroundColor: "pink",
-  },
-  red: {
-    backgroundColor: "red",
-  },
-  blue: {
-    backgroundColor: "blue",
-  },
-  green: {
-    backgroundColor: "green",
   },
 });
