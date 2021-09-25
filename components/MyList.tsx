@@ -14,26 +14,29 @@ type CellProps = {
   color?: "red" | "blue" | "green" | "pink";
 };
 
-const Cell: React.FC<CellProps> = ({ children, color }) => {
-  const colorStyle = (() => {
-    switch (color) {
-      case "red": {
-        return styles.red;
-      }
-      case "blue": {
-        return styles.blue;
-      }
-      case "green": {
-        return styles.green;
-      }
-      case "pink": {
-        return styles.pink;
-      }
+const colorStyle = (color?: string) => {
+  switch (color) {
+    case "red": {
+      return styles.red;
     }
-  })();
+    case "blue": {
+      return styles.blue;
+    }
+    case "green": {
+      return styles.green;
+    }
+    case "pink": {
+      return styles.pink;
+    }
+    default: {
+      return styles.red;
+    }
+  }
+};
 
+const Cell: React.FC<CellProps> = ({ children, color }) => {
   return (
-    <View style={[styles.item, colorStyle]}>
+    <View style={[styles.item, colorStyle(color)]}>
       <Text>{children}</Text>
     </View>
   );
