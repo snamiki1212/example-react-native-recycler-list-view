@@ -11,7 +11,7 @@ import { Cell } from "./Cell";
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const HEIGHT_WIDTH = Dimensions.get("window").width;
 
-const isShallowEqual = (prev: Item, next: Item) => prev.id !== next.id;
+const shallowCompare = (prev: Item, next: Item) => prev.id !== next.id;
 
 const RVL = {
   HEADER: "HEADER",
@@ -85,7 +85,7 @@ export const MyList: React.VFC<Props> = ({ list, onEndReached }) => {
   const isLast = (idx: number) => list.length - 1 === idx;
   const defineType = createDefineType({ isLast });
   const lp = new LayoutProvider(defineType, defineDimension);
-  const dp = new DataProvider(isShallowEqual).cloneWithRows(list);
+  const dp = new DataProvider(shallowCompare).cloneWithRows(list);
   const shouldRenderRVL = list.length > 1;
   return (
     <View style={styles.container}>
